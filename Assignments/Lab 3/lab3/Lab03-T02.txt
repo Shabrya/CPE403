@@ -1,3 +1,6 @@
+// Shabrya Lott CPE403 Lab3
+//Task02: Change the delay of the LED blink (approx 0.333 sec)
+//		  by changing the clock source and configuration
 #include <stdint.h>			//variable definitions for the C99 standard
 #include <stdbool.h>		//Boolean definitions for the C99 standard
 #include "inc/hw_memmap.h"		//macros defining the memory map of Tiva C Series
@@ -9,8 +12,11 @@ uint8_t ui8PinData=2;	//unsigned 8-bt int that is used to cycle through LEDs
 
 int main(void)
 {
-	//sets clock: xtal = 16Mhz,  400MHz PLL divided by 10
-	SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+	//2000000 loop * 3 CPU CYCLES = 6000000 CPU CYCLE
+	//6000000/ freq = 0.333sec => freq = 6000000/0.333 sec = 18.18MHZ
+	//sets clock: xtal = 16Mhz,  400MHz PLL divided by 22
+	SysCtlClockSet(SYSCTL_SYSDIV_11|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+
 	//enables PORT F
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 	//set 3 GPIO pins conneced to the LEDs as ouputs

@@ -1,3 +1,5 @@
+// Shabrya Lott CPE403 Lab3
+//Task03 b: Blink two LEDs at an instnace and with a sequence 
 #include <stdint.h>			//variable definitions for the C99 standard
 #include <stdbool.h>		//Boolean definitions for the C99 standard
 #include "inc/hw_memmap.h"		//macros defining the memory map of Tiva C Series
@@ -5,7 +7,7 @@
 #include "driverlib/sysctl.h"	//defines macros for System Control API of Driverlib
 #include "driverlib/gpio.h"	//defines macros for GPIO API of Driverlib
 
-uint8_t ui8PinData=2;	//unsigned 8-bt int that is used to cycle through LEDs
+uint8_t ui8PinData=6;	//unsigned 8-bt int that is used to cycle through LEDs
 
 int main(void)
 {
@@ -28,9 +30,11 @@ int main(void)
 		GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x00);
 
 		SysCtlDelay(2000000); //delay =  2000000 * 3  = 6000000 CPU cycles
-		//set ui8PinData to the next LED color in the sequence
-		//0010 (red), 0100 (blue), 1000 (green), ...
-		if(ui8PinData==8) {ui8PinData=2;} else {ui8PinData=ui8PinData*2;}
+
+		//blink two LEDs simultaneously in a sequence
+		if(ui8PinData==6) {ui8PinData=10;} 			//	0110 (BR-purple)
+		else if (ui8PinData==10) {ui8PinData=12;}	//  1010(RG-yellow)
+		else {ui8PinData=6;} 						//	1100(GB-aqua)
 	}
 }
 

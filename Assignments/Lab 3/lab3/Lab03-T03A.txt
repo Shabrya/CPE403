@@ -1,3 +1,5 @@
+// Shabrya Lott CPE403 Lab3
+//Task03 a: Change the sequence of the LED blinking 
 #include <stdint.h>			//variable definitions for the C99 standard
 #include <stdbool.h>		//Boolean definitions for the C99 standard
 #include "inc/hw_memmap.h"		//macros defining the memory map of Tiva C Series
