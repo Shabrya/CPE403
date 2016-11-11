@@ -161,6 +161,10 @@ void TSL2591_init()
 
 
 }
+void TSL2591_disable()
+{
+	i2c0_write(TSL2591_ADDR,TSL2591_COMMAND_BIT|TSL2591_REGISTER_ENABLE, 0x00);
+}
 
 float getLuminosity ()
 {
@@ -170,25 +174,20 @@ float getLuminosity ()
 	uint16_t ch1 = 0;
 
 	// Get full luminosity
-	//read the high byte of channel 1
-	ch1 = i2c0_read(TSL2591_ADDR, TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN1_HIGH);
-	ch1 <<= 8;
-	//read the low byte of channel 1
-	ch1 |= i2c0_read(TSL2591_ADDR, TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN1_LOW);
-
-	//read the low byte of channel 0
-	ch0 = i2c0_read(TSL2591_ADDR,TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN0_LOW);
+	//read the high byte of channel 0
+	ch0 = i2c0_read(TSL2591_ADDR, TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN0_HIGH);
 	ch0 <<= 8;
-	//read the high byte of channe0
-	ch0 |= i2c0_read(TSL2591_ADDR,TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN0_HIGH);
+	//read the low byte of channel 0
+	ch0 |= i2c0_read(TSL2591_ADDR, TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN0_LOW);
+
+	//read the low byte of channel 1
+	ch1 = i2c0_read(TSL2591_ADDR,TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN1_HIGH);
+	ch1 <<= 8;
+	//read the high byte of channel 1
+	ch1 |= i2c0_read(TSL2591_ADDR,TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN1_LOW);
 
 
-  	//Check for overflow conditions first
-	if((ch0 == 0xFFFF) |(ch1 == 0xFFFF) )
-  	{
-		UARTprintf("\n Overflow");
-  		return 0;
-  	}
+
 	//Calculate Lux value from sensor
 	cpl = (atime * again) / TSL2591_LUX_DF;	  // cpl = (ATIME * AGAIN) / DF
   	lux1 = ( (float)ch0 - (TSL2591_LUX_COEFB * (float)ch1) ) / cpl;
@@ -246,6 +245,8 @@ int main(void)
 	while(1)
 	{
 
+		//re-init sensor
+		TSL2591_init();
 		SysCtlDelay(5000000);
 		//get luminosity from the sensor
 		lux_read = getLuminosity();
@@ -269,7 +270,8 @@ int main(void)
 		SysCtlDelay(20000000);
 		//send data to thingSpeak
 		UARTprintf("%s\n\r",&Lux);
-
+		//disable sensor
+		TSL2591_disable();
 
 	}
 }
