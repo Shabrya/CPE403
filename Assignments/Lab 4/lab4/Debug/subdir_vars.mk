@@ -7,7 +7,7 @@ CMD_SRCS += \
 ../tm4c123gh6pm.cmd 
 
 LIB_SRCS += \
-C:/ti/ccsv6/TivaWare_C_Series-2.1.3.156/driverlib/ccs/Debug/driverlib.lib 
+C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/ccs/Debug/driverlib.lib 
 
 C_SRCS += \
 ../main.c \
