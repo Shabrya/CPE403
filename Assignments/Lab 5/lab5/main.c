@@ -1,0 +1,75 @@
+/*Shabrya Lott
+ * Tiva_c Lab05
+ * Usage:This is a simple program that calculates the avg temp of the on board sensor
+ */
+
+#include <stdint.h>				//variable definitions for the C99 standard
+#include <stdbool.h>			//Boolean definitions for the C99 standard
+#include "inc/hw_memmap.h"		//macros defining the memory map of Tiva C Series
+#include "inc/hw_types.h"		//defines common types and macros
+#include "driverlib/debug.h"	//Macros for assisting debug of the driver library
+#include "driverlib/sysctl.h"	//defines macros for System Control API of Driverlib
+#include "driverlib/adc.h"		//definitions for using the ADC driver
+#define TARGET_IS_BLIZZARD_RB1
+#include "driverlib/rom.h"		//Macros to facilitate calling functions in the ROM
+
+#ifdef DEBUG
+void__error__(char *pcFilename, uint32_t u132Line)
+{
+}
+#endif
+
+int main(void)
+{
+	//will store 4 values from FIFO when using the sequencer 1
+	uint32_t ui32ADC0Value[4];
+	//stores average of 4 sampled values
+	volatile uint32_t ui32TempAvg;
+	//stores temperture in Celsius
+	volatile uint32_t ui32TempValueC;
+	//stores temperture in Fahrenheit
+	volatile uint32_t ui32TempValueF;
+
+	//set cock to 40MHz
+	ROM_SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_OSC_MAIN|SYSCTL_XTAL_16MHZ);
+
+	//configure step 0 from temp sensor
+	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
+
+	//each sample in the ADC FIFO will be the result of 64 measurements being averaged together
+	ROM_ADCHardwareOversampleConfigure(ADC0_BASE, 64);
+
+	//Enable ADC0, sample sequencer 1, trigger with processor
+	ADCSequenceConfigure(ADC0_BASE, 1, ADC_TRIGGER_PROCESSOR, 0);
+	//configure ADC0, sequencer 1, step 0
+	ROM_ADCSequenceStepConfigure(ADC0_BASE, 1, 0, ADC_CTL_TS);
+	//configure ADC0, sequencer 1, step 1
+	ROM_ADCSequenceStepConfigure(ADC0_BASE, 1, 1, ADC_CTL_TS);
+	//configure ADC0, sequencer 1, step 2
+	ROM_ADCSequenceStepConfigure(ADC0_BASE, 1, 2, ADC_CTL_TS);
+	//configure ADC0, sequencer 1, step 3 and tell sequencer to finish
+	ROM_ADCSequenceStepConfigure(ADC0_BASE,1,3,ADC_CTL_TS|ADC_CTL_IE|ADC_CTL_END);
+	//enable ADC0, sequencer 1
+	ROM_ADCSequenceEnable(ADC0_BASE, 1);
+
+	while(1)	//infinite loop
+	{
+		//clear interrupt flag on ADC0, sequencer 1
+		ROM_ADCIntClear(ADC0_BASE, 1);
+		//Trigger ADC0 sequencer 1
+		ROM_ADCProcessorTrigger(ADC0_BASE, 1);
+
+		//wait for ADC conversion to finish
+	   while(!ADCIntStatus(ADC0_BASE, 1, false))
+	   {
+	   }
+	   //get data from FIFO and out into array
+	   ROM_ADCSequenceDataGet(ADC0_BASE, 1, ui32ADC0Value);
+	   //calculate avg temp (+2/4 used for rounding)
+	   ui32TempAvg = (ui32ADC0Value[0] + ui32ADC0Value[1] + ui32ADC0Value[2] + ui32ADC0Value[3] + 2)/4;
+	   //calculate temp in Celsius
+	   ui32TempValueC = (1475 - ((2475 * ui32TempAvg)) / 4096)/10;
+	   //calculate temp in Fahrenheit
+	   ui32TempValueF = ((ui32TempValueC * 9) + 160) / 5;
+	}
+}
