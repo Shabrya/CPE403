@@ -1,9 +1,9 @@
 ******************************************************************************
                   TI ARM Linker PC v15.12.3                    
 ******************************************************************************
->> Linked Mon Nov 21 19:17:05 2016
+>> Linked Sat Nov 26 21:53:08 2016
 
-OUTPUT FILE NAME:   <bitband.out>
+OUTPUT FILE NAME:   <lab8-T2.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 0000081d
 
 

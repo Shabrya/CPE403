@@ -125,33 +125,33 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-bitband.out \
+lab8-T2.out \
 
 EXE_OUTPUTS__QUOTED += \
-"bitband.out" \
+"lab8-T2.out" \
 
 BIN_OUTPUTS += \
-bitband.bin \
+lab8-T2.bin \
 
 BIN_OUTPUTS__QUOTED += \
-"bitband.bin" \
+"lab8-T2.bin" \
 
 
 # All Target
-all: bitband.out
+all: lab8-T2.out
 
 # Tool invocations
-bitband.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+lab8-T2.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --advice:power=all -g --gcc --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RA1 --diag_wrap=off --diag_warning=225 --display_error_number --gen_func_subsections=on --abi=eabi --ual -z -m"bitband_ccs.map" --stack_size=512 --heap_size=0 -i"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --diag_wrap=off --warn_sections --display_error_number --xml_link_info="bitband_linkInfo.xml" --rom_model -o "bitband.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --advice:power=all -g --gcc --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RA1 --diag_wrap=off --diag_warning=225 --display_error_number --gen_func_subsections=on --abi=eabi --ual -z -m"bitband_ccs.map" --stack_size=512 --heap_size=0 -i"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --diag_wrap=off --warn_sections --display_error_number --xml_link_info="lab8-T2_linkInfo.xml" --rom_model -o "lab8-T2.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
 
-bitband.bin: $(EXE_OUTPUTS)
+lab8-T2.bin: $(EXE_OUTPUTS)
 	@echo 'Invoking: ARM Hex Utility'
-	"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex"  -o "bitband.bin" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex"  -o "lab8-T2.bin" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -165,7 +165,7 @@ clean:
 	-@echo ' '
 
 post-build:
-	-"C:/ti/ccsv6/utils/tiobj2bin/tiobj2bin" "bitband.out" "bitband.bin" "C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armofd" "C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex" "C:/ti/ccsv6/utils/tiobj2bin/mkhex4bin"
+	-"C:/ti/ccsv6/utils/tiobj2bin/tiobj2bin" "lab8-T2.out" "lab8-T2.bin" "C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armofd" "C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex" "C:/ti/ccsv6/utils/tiobj2bin/mkhex4bin"
 	-@echo ' '
 
 .PHONY: all clean dependents

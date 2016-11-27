@@ -122,32 +122,32 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-lab8.out \
+lab8-T1.out \
 
 EXE_OUTPUTS__QUOTED += \
-"lab8.out" \
+"lab8-T1.out" \
 
 BIN_OUTPUTS += \
-lab8.hex \
+lab8-T1.hex \
 
 BIN_OUTPUTS__QUOTED += \
-"lab8.hex" \
+"lab8-T1.hex" \
 
 
 # All Target
-all: lab8.out
+all: lab8-T1.out
 
 # Tool invocations
-lab8.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
+lab8-T1.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -g --gcc --define=PART_TM4C123GH6PM --define=ccs="ccs" --diag_wrap=off --diag_warning=225 --display_error_number --abi=eabi -z -m"lab8.map" --stack_size=100 --heap_size=0 -i"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --diag_wrap=off --warn_sections --display_error_number --xml_link_info="lab8_linkInfo.xml" --rom_model -o "lab8.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -g --gcc --define=PART_TM4C123GH6PM --define=ccs="ccs" --diag_wrap=off --diag_warning=225 --display_error_number --abi=eabi -z -m"lab8-T1.map" --stack_size=100 --heap_size=0 -i"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --diag_wrap=off --warn_sections --display_error_number --xml_link_info="lab8-T1_linkInfo.xml" --rom_model -o "lab8-T1.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-lab8.hex: $(EXE_OUTPUTS)
+lab8-T1.hex: $(EXE_OUTPUTS)
 	@echo 'Invoking: ARM Hex Utility'
-	"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex"  -o "lab8.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex"  -o "lab8-T1.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 
