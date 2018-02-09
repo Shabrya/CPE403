@@ -1,2 +1,2 @@
-# CPE403-Fall 2016
+# CPE403-Embedded Systems
 This repository contains Lab Assignments, Midterm Project, and Final Project.
